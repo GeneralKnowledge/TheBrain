@@ -1,0 +1,25 @@
+# Weight-space experiment track (Transformers backend required).
+# Production inference can remain on llama.cpp; experiments use baseline_dir HF weights.
+[runtime]
+data_dir = "../data/selfmod"
+
+[model]
+backend = "transformers"
+model_id = "Qwen/Qwen3-1.7B-Base"
+revision = "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+path = "../models/hf/Qwen3-1.7B-Base"
+device = "cpu"
+dtype = "bfloat16"
+context_length = 512
+
+[selfmod]
+enabled = true
+autorun = true
+baseline_dir = "../models/hf/Qwen3-1.7B-Base"
+candidates_dir = "candidates"
+max_experiments_per_hour = 2
+
+[scheduler]
+interval_s = 120.0
+autonomous = true
+consolidate_every = 3

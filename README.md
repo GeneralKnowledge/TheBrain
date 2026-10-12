@@ -1,10 +1,12 @@
 # Open Cognitive Runtime (`cogrt`)
 
 This project is an experiment in **persistent, inspectable internal activity** around an
-open-weight language model. The runtime decides when and why the model runs; the model
-is not required to answer a user on every invocation. A terminal interface is provided
-for observation and optional conversation, but it is not the primary purpose of the
-system.
+open-weight language model, with a long-term research direction toward **autonomous,
+evidence-driven self-modification of model weights** (not fine-tune-by-default).
+
+The runtime decides when and why the model runs; the model is not required to answer a
+user on every invocation. A terminal interface is provided for observation and optional
+conversation, but it is not the primary purpose of the system.
 
 This is **not** a conventional chatbot with memory, a simulated personality, or a
 self-prompting text loop pretending to be cognition. Internal work is structured
@@ -68,6 +70,21 @@ Details: `docs/PLAN.md`, status: `docs/STATUS.md`, measurements: `docs/RESULTS.m
 - **Interrupt:** `cogrt interrupt` (cancel at safe boundary)
 - **Emergency stop:** `touch data/<profile>/STOP` or `cogrt stop --now`
 - **Budgets:** `cogrt set interval_s=120 max_cycles_per_hour=20`
+
+## Weight-space experiments (W1)
+
+Requires Transformers + HF weights under `models/hf/Qwen3-1.7B-Base/`:
+
+```bash
+pip install -e ".[torch,dev]"
+cogrt -c configs/selfmod-research.toml selfmod propose
+cogrt -c configs/selfmod-research.toml selfmod run
+cogrt -c configs/selfmod-research.toml selfmod list
+```
+
+This performs a **real sparse perturbation** on stored weights (candidate delta on disk;
+parent checkpoint unchanged), evaluates baseline vs patched model on fixed probes, and
+records accept / reject / inconclusive in SQLite. See `docs/GAP_ANALYSIS.md`.
 
 ## Tests and benchmarks
 
