@@ -1,0 +1,14 @@
+# Accelerated simulation: 50 agents, 24h logical time, 5% of ticks invoke the mock model.
+config = "mock.toml"
+agents = 50
+sim_time = 86400
+tick_s = 300
+model_invoke_rate = 0.05
+use_model = true
+rng_seed = 42
+
+seed_notes = [
+  "The harbour froze in 1987.",
+  "Owls nest in the abandoned mill.",
+  "Salt air corrodes iron faster than inland rain.",
+]

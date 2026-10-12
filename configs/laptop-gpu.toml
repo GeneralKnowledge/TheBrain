@@ -1,0 +1,28 @@
+# GTX 1060 offload. UNTESTED: the development VM has no GPU, and the default
+# llama-cpp-python CPU wheel has no CUDA support. A CUDA build is required:
+#   CMAKE_ARGS="-DGGML_CUDA=on" pip install --no-binary llama-cpp-python llama-cpp-python==0.3.36
+# The adapter falls back to CPU (and records why) if offload is unavailable.
+# Q4_K_M weights are ~1.1 GB; a 3 GB GTX 1060 should hold all 28 layers plus a
+# 1024-token KV cache, and a 6 GB card certainly will. Check `cogrt hw` first.
+[runtime]
+data_dir = "../data/laptop"
+
+[model]
+backend = "llamacpp"
+model_id = "Qwen/Qwen3-1.7B-Base"
+revision = "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+path = "../models/Qwen3-1.7B-Base.Q4_K_M.gguf"
+quantization = "Q4_K_M"
+context_length = 1024
+n_gpu_layers = -1
+seed = 1234
+
+[scheduler]
+interval_s = 30.0
+min_interval_s = 5.0
+max_interval_s = 1800.0
+max_cycle_s = 60.0
+max_tokens_per_operation = 64
+max_model_calls_per_cycle = 3
+max_cycles_per_hour = 60
+token_budget_per_hour = 8000

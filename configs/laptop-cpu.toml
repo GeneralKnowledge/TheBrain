@@ -1,0 +1,38 @@
+# Minimum target: Dell G3 (8 GB RAM, GTX 1060) or any machine without a usable GPU.
+# Measured on the development VM (4 vCPU, no GPU): ~1.9 GB RSS, 13-21 tokens/s.
+[runtime]
+data_dir = "../data/laptop"
+
+[model]
+backend = "llamacpp"
+model_id = "Qwen/Qwen3-1.7B-Base"
+revision = "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+# mradermacher/Qwen3-1.7B-Base-GGUF @ 7b0494b4ddf6e7aa1ca2da0b2f398be382dd0ea8
+path = "../models/Qwen3-1.7B-Base.Q4_K_M.gguf"
+quantization = "Q4_K_M"
+context_length = 1024
+n_threads = 0
+n_gpu_layers = 0
+seed = 1234
+
+[generation]
+max_tokens = 48
+temperature = 0.8
+top_p = 0.95
+top_k = 40
+repeat_penalty = 1.1
+stop = ["\n"]
+
+[scheduler]
+interval_s = 60.0
+min_interval_s = 10.0
+max_interval_s = 1800.0
+max_cycle_s = 90.0
+max_tokens_per_operation = 48
+max_model_calls_per_cycle = 2
+max_cycles_per_hour = 30
+token_budget_per_hour = 3000
+
+[cycle]
+n_candidates = 2
+context_items = 4

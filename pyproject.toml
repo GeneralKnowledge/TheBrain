@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cogrt"
+version = "0.1.0"
+description = "Open Cognitive Runtime: a persistent, inspectable process around a language model"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+# The runtime itself uses only the standard library.
+dependencies = []
+
+[project.optional-dependencies]
+# Versions are the ones tested on the development VM (see docs/STATUS.md).
+llama = ["llama-cpp-python==0.3.36"]
+torch = ["torch==2.14.1", "transformers==5.19.0", "safetensors==0.8.0", "numpy>=1.26"]
+dev = ["pytest==9.1.1"]
+
+[project.scripts]
+cogrt = "cogrt.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cogrt*", "research*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "model: needs a downloaded model (run with -m model)",
+    "slow: takes more than a few seconds",
+]
+addopts = "-m 'not model'"
