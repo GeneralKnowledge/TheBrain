@@ -1,0 +1,12 @@
+# Seed notes: one per line. Lines ending with '?' become open questions.
+# These are deliberately mundane and mixed so that association has material.
+The town's clock tower runs four minutes slow every winter.
+Moss grows thicker on the north side of the old stone wall.
+Bread dough rises more slowly in the cold pantry.
+The river froze completely only twice in the last fifty years.
+Migrating geese arrived two weeks earlier this year than last year.
+The library's oldest map shows a road that no longer exists.
+Copper roofs turn green over several decades.
+Why does the clock tower lose time only in winter?
+What made the geese arrive earlier this year?
+Where did the road on the old map lead?

@@ -1,0 +1,20 @@
+# Runtime on a lightweight host, inference on another machine running
+# llama.cpp's `llama-server -m model.gguf --port 8080`. Network access is
+# disabled unless explicitly allowed here.
+[runtime]
+data_dir = "../data/remote"
+
+[model]
+backend = "remote"
+model_id = "Qwen/Qwen3-1.7B-Base"
+remote_url = "http://127.0.0.1:8080"
+remote_timeout_s = 120.0
+
+[security]
+allow_network = true
+
+[scheduler]
+interval_s = 20.0
+min_interval_s = 5.0
+max_cycles_per_hour = 120
+token_budget_per_hour = 20000

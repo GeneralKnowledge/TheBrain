@@ -1,0 +1,24 @@
+# Activation-capable backend (PyTorch). bf16 Qwen3-1.7B-Base needs ~3.6 GB RAM
+# on CPU; it does not fit next to an SAE layer on an 8 GB laptop with other load.
+# The runtime works with this backend, but it is slower than llama.cpp.
+[runtime]
+data_dir = "../data/research"
+
+[model]
+backend = "transformers"
+model_id = "Qwen/Qwen3-1.7B-Base"
+revision = "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+path = "../models/hf/Qwen3-1.7B-Base"
+device = "cpu"
+dtype = "bfloat16"
+context_length = 1024
+seed = 1234
+
+[scheduler]
+interval_s = 120.0
+min_interval_s = 20.0
+max_cycle_s = 180.0
+max_tokens_per_operation = 48
+max_model_calls_per_cycle = 2
+max_cycles_per_hour = 15
+token_budget_per_hour = 2000

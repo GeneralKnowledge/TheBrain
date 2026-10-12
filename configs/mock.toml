@@ -1,0 +1,17 @@
+# Dependency-free configuration. The mock backend is not a language model;
+# use it for tests, demos of the control surface and simulations.
+[runtime]
+data_dir = "../data/mock"
+
+[model]
+backend = "mock"
+model_id = "mock/deterministic"
+seed = 7
+
+[scheduler]
+interval_s = 2.0
+min_interval_s = 1.0
+max_interval_s = 30.0
+max_cycle_s = 10.0
+max_cycles_per_hour = 600
+token_budget_per_hour = 100000
