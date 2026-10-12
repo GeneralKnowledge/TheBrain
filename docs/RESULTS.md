@@ -17,12 +17,19 @@ Environment: Ubuntu 24.04, Python 3.12, 4 logical CPUs, ~5 GB RAM available, no 
 Five cycles without user input (`configs/mock.toml`): durable unresolved items created;
 no entries on the `message` channel. See `data/mock/` from local smoke runs.
 
+### Weight-space vertical slice (Transformers, Qwen3-1.7B-Base HF)
+
+- Intervention: `sparse_perturbation` on `model.layers.0.mlp.down_proj.weight` (16 params, seed 42)
+- Verified: `max_abs_diff > 0` between parent and candidate delta
+- Decision: recorded in `weight_experiments` (accept / no_effect / inconclusive / regressed per probes)
+- Test: `pytest tests/test_selfmod.py -m model` (~27 s on VM)
+
 ### Automated tests
 
 ```
-pytest -q                 → 36 passed, 2 deselected (model marker)
-pytest -m model -q        → 2 passed (GGUF load + one live cycle)
-cogrt bench               → 6/6 cases passed (after pause metric fix)
+pytest -q                 → 41 passed, 3 deselected (model marker)
+pytest -m model -q        → GGUF + live cycle + full weight experiment
+cogrt bench               → 6/6 cases passed
 ```
 
 ### Negative / limitation notes
