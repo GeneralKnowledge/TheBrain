@@ -1,8 +1,11 @@
 # Implementation plan
 
-This plan was written after inspecting the (empty) repository, the development
-VM and the current Hugging Face listings. It is kept short on purpose; the
-status of each item is tracked in `docs/STATUS.md`.
+**North star:** a persistent runtime that can **observe → hypothesise → experiment on
+actual model weights → evaluate → record → repeat**, with increasing autonomy over
+*what* to try—not a chatbot and not fine-tune-by-default.
+
+Status of each item is tracked in `docs/STATUS.md`. Gap analysis:
+`docs/GAP_ANALYSIS.md`. Method register: `docs/RESEARCH_REGISTER.md`.
 
 ## Findings that shaped the plan
 
@@ -65,8 +68,16 @@ research/              optional research prototypes (torch required)
 | 12 | Steering without rewriting | `SteeringSpec` in `GenerationRequest`; research package only |
 | 13 | Docs | README, docs/STATUS.md, docs/RESULTS.md |
 
-## Order of work
+## Order of work (updated)
 
-M0 hardware + model verification → M1 runtime → M2 state evolution and
-benchmarks → M3 activation steering → M4 AURIX + dimensions → M5 simulation.
+Done: M0–M1, partial M2, W1 weight vertical slice.
+
+Next:
+
+1. **W2** — Model-proposed structured hypotheses (JSON schema + validator); still constrained interventions.
+2. **W3** — Candidate promotion gate (explicit accept → new baseline revision); never silent overwrite.
+3. **M3** — Activation steering vs weight edit comparison on shared probes.
+4. **W4** — One targeted-edit method (ROME-class) feasibility on Qwen3-1.7B.
+5. M4 AURIX as behavioural instrument post-intervention; M5 simulation at scale.
+
 Each milestone is committed separately.

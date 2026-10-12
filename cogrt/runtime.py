@@ -323,6 +323,14 @@ class Runtime:
         self.store.event("internal", "continuation", self.last_outcome)
         if dec.dormant or self.cycle_no % self.cfg.scheduler.consolidate_every == 0:
             self.run_consolidation()
+        if self.cfg.selfmod.autorun:
+            try:
+                from .selfmod.pipeline import tick_autonomous
+                sm = tick_autonomous(self.store, self.cfg)
+                if sm and not sm.get("skipped"):
+                    self.store.event("internal", "selfmod_tick", sm)
+            except Exception as exc:  # noqa: BLE001
+                log.exception("selfmod tick failed: %s", exc)
         if self.paused:
             self.set_state(State.PAUSED, "paused")
         else:

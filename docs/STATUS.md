@@ -3,6 +3,10 @@
 Last updated on the development VM (4 vCPU, ~16 GB RAM, **no GPU**). Measurements
 labelled “VM” are from this environment, not from the Dell G3 target laptop.
 
+**Mission (current):** investigate autonomous, evidence-driven **weight-space**
+self-modification, not chat-first assistance. See `docs/GAP_ANALYSIS.md` and
+`docs/RESEARCH_REGISTER.md`.
+
 ## Milestones
 
 | Milestone | Status | Notes |
@@ -13,6 +17,7 @@ labelled “VM” are from this environment, not from the Dell G3 target laptop.
 | M3 Activation research | **Scaffold** | Transformers backend + hooks; `research/steering`, `research/sae` optional |
 | M4 AURIX & controls | **Scaffold** | AURIX prompt + comparison helper; steering extraction API |
 | M5 Accelerated simulation | **Initial** | `cogrt sim` with mock/cached inference |
+| **W1 Weight experiment vertical slice** | **Done (VM)** | Sparse perturbation, candidate lineage, baseline/candidate probes, auto decision, persistence, fingerprint block, `cogrt selfmod` |
 
 ## What is implemented
 
@@ -37,12 +42,19 @@ labelled “VM” are from this environment, not from the Dell G3 target laptop.
 
 GPU offload: **not tested** (CPU-only wheel). Config `configs/laptop-gpu.toml` documents expectations.
 
+## Self-modification (W1)
+
+- **Implemented & tested:** `cogrt/selfmod/` sparse perturbation, SQLite `weight_experiments`, CLI `selfmod propose|run|list|pending`
+- **Measured (VM):** run `pytest tests/test_selfmod.py -m model` when HF weights present
+- **Not claimed:** semantic “personality” editing, ROME/MEMIT, auto-promote candidate to production baseline, GGUF weight edits
+
 ## Not verified / speculative
 
 - Behavioural persistence of activation steering without prompts (API only)
 - SAE feature intervention at scale (loader for one layer only)
 - Remote backend against a live `llama-server`
 - Population-level emergent behaviour (simulation uses mock/cached text)
+- Model-authored structured hypotheses (template/CLI only today)
 
 ## Target laptop checklist (Dell G3, 8 GB RAM, GTX 1060)
 

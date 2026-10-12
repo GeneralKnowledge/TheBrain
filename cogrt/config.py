@@ -119,6 +119,15 @@ class SecurityConfig:
 
 
 @dataclass
+class SelfModConfig:
+    enabled: bool = False
+    autorun: bool = False  # run one pending weight experiment after internal cycles
+    baseline_dir: str = ""  # HF directory; empty → model.path
+    candidates_dir: str = "candidates"
+    max_experiments_per_hour: int = 4
+
+
+@dataclass
 class Config:
     runtime: RuntimeConfig = field(default_factory=RuntimeConfig)
     model: ModelConfig = field(default_factory=ModelConfig)
@@ -128,6 +137,7 @@ class Config:
     memory: MemoryConfig = field(default_factory=MemoryConfig)
     workspace: WorkspaceConfig = field(default_factory=WorkspaceConfig)
     security: SecurityConfig = field(default_factory=SecurityConfig)
+    selfmod: SelfModConfig = field(default_factory=SelfModConfig)
     source_path: str = ""
 
     @property

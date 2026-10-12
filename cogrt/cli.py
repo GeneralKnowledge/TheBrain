@@ -393,6 +393,35 @@ def cmd_experiment(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_selfmod(args: argparse.Namespace) -> int:
+    cfg = _cfg(args)
+    store = _store(cfg)
+    from .selfmod import experiments_db as sdb
+    from .selfmod.pipeline import propose_default_hypothesis, run_experiment, tick_autonomous
+
+    if args.action == "propose":
+        hid = propose_default_hypothesis(store, seed=args.seed)
+        print(f"weight hypothesis #{hid}")
+        return 0
+    if args.action == "list":
+        sdb.ensure_schema(store)
+        for e in sdb.list_experiments(args.limit):
+            print(json.dumps({k: e[k] for k in e if k != "detail"}, default=str))
+        return 0
+    if args.action == "pending":
+        for it in sdb.pending_weight_hypotheses(store, args.limit):
+            print(fmt_item(it))
+        return 0
+    if args.action == "run":
+        if args.hypothesis_id:
+            report = run_experiment(store, cfg, hypothesis_item_id=int(args.hypothesis_id))
+        else:
+            report = tick_autonomous(store, cfg) or {"error": "no pending hypothesis or disabled"}
+        _print(report)
+        return 0 if report.get("decision") or report.get("skipped") else 1
+    return 1
+
+
 def cmd_sim(args: argparse.Namespace) -> int:
     from .sim.engine import run_simulation_file
     report = run_simulation_file(args.file, out_dir=args.out)
@@ -476,6 +505,12 @@ def build_parser() -> argparse.ArgumentParser:
     x.add_argument("file")
     x.add_argument("--out", default="results/experiments")
     x.set_defaults(fn=cmd_experiment)
+    sm = sub.add_parser("selfmod", help="weight-space self-modification experiments")
+    sm.add_argument("action", choices=["propose", "list", "pending", "run"])
+    sm.add_argument("--hypothesis-id", type=int)
+    sm.add_argument("--seed", type=int, default=0)
+    sm.add_argument("--limit", type=int, default=20)
+    sm.set_defaults(fn=cmd_selfmod)
     si = sub.add_parser("sim", help="run an accelerated population simulation (TOML)")
     si.add_argument("file")
     si.add_argument("--out", default="results/sim")
