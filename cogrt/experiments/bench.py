@@ -34,6 +34,8 @@ def run_suite(cfg: Config | None = None, out_dir: str = "results/bench",
     root = Path(__file__).resolve().parents[2]
     cfg = cfg or load(root / "configs" / "mock.toml")
     out = Path(out_dir)
+    if not out.is_absolute():
+        out = root / out
     out.mkdir(parents=True, exist_ok=True)
     cases: dict[str, Any] = {}
 
